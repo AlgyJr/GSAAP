@@ -8,9 +8,10 @@
         <div class="row">
             <?php include 'includes/navbar.php'; ?>
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                <?php require_once 'clientes.php'; ?>
+                <?php require_once 'funcionarios.php'; ?>
             </main>
         </div>
     </div>
-<?php require_once 'includes/footer.php'; ?>
-
+    <?php require_once 'includes/footer.php'; ?>
+</body>
+</html>
