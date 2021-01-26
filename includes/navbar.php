@@ -2,33 +2,33 @@
       <div class="position-sticky pt-3">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link <?php echo $entity == "funcionarios" ? "active" : "";?>" href="funcionarios.php">
-              <span data-feather="file"></span>
-              Funcionários
-            </a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link <?php echo $entity == "clientes" ? "active" : "";?>" href="clientes.php">
               <span data-feather="shopping-cart"></span>
               Clientes
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link <?php echo $entity == "propriedades" ? "active" : "";?>" href="#">
+            <a class="nav-link <?php echo $entity == "propriedades" ? "active" : "";?>" href="propriedades.php">
               <span data-feather="users"></span>
               Propriedades
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link <?php echo $entity == "leituras" ? "active" : "";?>" href="#">
+            <a class="nav-link <?php echo $entity == "leituras" ? "active" : "";?>" href="leituras.php">
               <span data-feather="bar-chart-2"></span>
               Leituras
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link <?php echo $entity == "facturas" ? "active" : "";?>" href="#">
+            <a class="nav-link <?php echo $entity == "facturas" ? "active" : "";?>" href="facturas.php">
               <span data-feather="layers"></span>
               Facturas
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link <?php echo $entity == "funcionarios" ? "active" : "";?>" href="funcionarios.php">
+              <span data-feather="file"></span>
+              Funcionários
             </a>
           </li>
         </ul>

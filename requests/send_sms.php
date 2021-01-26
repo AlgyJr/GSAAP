@@ -14,9 +14,9 @@ $twilio_number = "+16466792405";
 $client = new Client($account_sid, $auth_token);
 $client->messages->create(
     // Where to send a text message (your cell phone?)
-    '+258849022333',
+    $number,
     array(
         'from' => $twilio_number,
-        'body' => '\nTest'
+        'body' => $msg
     )
 );

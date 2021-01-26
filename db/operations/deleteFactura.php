@@ -1,13 +1,13 @@
 <?php
     include '../connect.php';
     
-    $query = "DELETE FROM CLIENTE WHERE client_id='$_GET[client_id]'";
+    $query = "DELETE FROM FACTURA WHERE factura_id='$_GET[factura_id]'";
 
     $result = mysqli_query($conn, $query);
 
     if ($result) {
         echo '<script> console.("Data deleted!") </script>';
-        header('Location: ../../clientes.php');
+        header('Location: ../../facturas.php');
     } else {
         echo '<script> alert("Data not deleted!") </script>';
     }

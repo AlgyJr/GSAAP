@@ -36,7 +36,7 @@
                             <?php 
                                 $result = mysqli_query($conn, "SELECT * FROM CLIENTE");
 
-                                if ($result) {
+                                if (mysqli_fetch_array($result)) {
                                     foreach ($result as $row) {
                                         echo "<tr>";
                                         echo "<td>".$row['client_id']."</td>";
@@ -51,7 +51,7 @@
                                     }
                                 } else {
                                     echo "<tr>";
-                                    echo "<td>Nenhum Cliente</td>";
+                                    echo "<td colSpan='8' style='text-align: center'>Nenhum Cliente</td>";
                                     echo "</tr>";
                                 }
                             ?>
@@ -68,28 +68,28 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form action="db/operations/createClient.php" method="POST">
-                        <div class="modal-body">
-                            <div class="mb-3">
+                        <div class="modal-body row g-3">
+                            <div class="col-md-6">
                                 <label for="nome" class="form-label">Nome</label>
                                 <input type="text" class="form-control" name="nome" placeholder="Introduza o nome">
                             </div>
-                            <div class="mb-3">
+                            <div class="col-md-6">
                                 <label for="sobrenome" class="form-label">Sobrenome</label>
                                 <input type="text" class="form-control" name="sobrenome" placeholder="Introduza o sobrenome">
                             </div>
-                            <div class="mb-3">
+                            <div class="col-md-6">
                                 <label for="apelido" class="form-label">Apelido</label>
                                 <input type="text" class="form-control" name="apelido" placeholder="Introduza o apelido">
                             </div>
-                            <div class="mb-3">
+                            <div class="col-12">
                                 <label for="email" class="form-label">Email</label>
                                 <input type="email" class="form-control" name="email" placeholder="nome@exemplo.com">
                             </div>
-                            <div class="mb-3">
+                            <div class="col-md-6">
                                 <label for="data_nasc" class="form-label">Data de nascimento</label>
                                 <input type="date" class="form-control" name="data_nasc">
                             </div>
-                            <div class="mb-3">
+                            <div class="col-md-6">
                                 <label for="" class="form-label">Sexo</label>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="sexo" id="masculino" checked value="M">
@@ -109,8 +109,8 @@
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                             <button type="submit" name="saveData" class="btn btn-primary">Salvar</button>
                         </div>
-                        </div>
                     </form>
+                    </div>
                 </div>
                 </div>
 
@@ -123,32 +123,32 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form action="db/operations/updateClient.php" method="POST">
-                        <div class="modal-body">
+                        <div class="modal-body row g-3">
                             <input type="hidden" name="client_id" id="client_id" />
-                            <div class="mb-3">
+                            <div class="col-md-6">
                                 <label for="nome" class="form-label">Nome</label>
                                 <input type="text" class="form-control" name="nome" id="nome" placeholder="Introduza o nome">
                             </div>
-                            <div class="mb-3">
+                            <div class="col-md-6">
                                 <label for="sobrenome" class="form-label">Sobrenome</label>
                                 <input type="text" class="form-control" name="sobrenome" id="sobrenome" placeholder="Introduza o sobrenome">
                             </div>
-                            <div class="mb-3">
+                            <div class="col-md-6">
                                 <label for="apelido" class="form-label">Apelido</label>
                                 <input type="text" class="form-control" name="apelido" id="apelido" placeholder="Introduza o apelido">
                             </div>
-                            <div class="mb-3">
+                            <div class="col-12">
                                 <label for="email" class="form-label">Email</label>
                                 <input type="email" class="form-control" name="email" id="email" placeholder="nome@exemplo.com">
                             </div>
-                            <div class="mb-3">
+                            <div class="col-md-6">
                                 <label for="data_nasc" class="form-label">Data de nascimento</label>
                                 <input type="date" class="form-control" name="data_nasc" id="data_nasc">
                             </div>
-                            <div class="mb-3">
+                            <div class="col-md-6">
                                 <label for="" class="form-label">Sexo</label>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="sexo" id="male" value="M">
+                                    <input class="form-check-input" type="radio" name="sexo" id="male" checked value="M">
                                     <label class="form-check-label" for="male">
                                         Masculino
                                     </label>
@@ -165,8 +165,8 @@
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                             <button type="submit" name="saveData" class="btn btn-primary">Salvar</button>
                         </div>
-                        </div>
                     </form>
+                    </div>
                 </div>
                 </div>
             </main>
