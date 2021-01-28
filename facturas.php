@@ -1,6 +1,6 @@
 <?php 
     include 'db/connect.php';
-    $title = 'Home';
+    $title = 'Facturas';
     require_once 'includes/head.php';
     // Barra de navegação
     include 'includes/header.php';
@@ -12,6 +12,7 @@
                 include 'includes/navbar.php';
             ?>
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <legend>Facturas</legend>
                 <!-- Renderização dos dados da tabela -->
                 <div class="table-responsive">
                     <table class="table table-striped table-sm">
@@ -42,7 +43,7 @@
                                     }
                                 } else {
                                     echo "<tr>";
-                                    echo "<td colSpan='8' style='text-align: center'>Nenhum Cliente</td>";
+                                    echo "<td colSpan='8' style='text-align: center'>Nenhuma Factura</td>";
                                     echo "</tr>";
                                 }
                             ?>
@@ -53,30 +54,6 @@
         </div>
     </div>
 <?php require_once 'includes/footer.php'; ?>
-
-<script>
-    $(document).ready(function () { 
-        $('.editbtn').on('click', function () {
-            $('#editModalForm').modal('show');
-
-            $tr = $(this).closest('tr');
-
-            var data = $tr.children("td").map(function () {
-                return $(this).text();
-            });
-
-            console.log(data);
-
-            $('#client_id').val(data[0]);
-            $('#nome').val(data[1]);
-            $('#sobrenome').val(data[2]);
-            $('#apelido').val(data[3]);
-            $('#email').val(data[4]);
-            $('#data_nasc').val(data[5]);
-            data[6] == 'M' ? $('#male').prop("checked", true) : $('#female').prop("checked", true);
-        })
-    })
-</script>
 
 </body>
 </html>

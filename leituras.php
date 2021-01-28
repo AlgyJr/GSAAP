@@ -1,6 +1,6 @@
 <?php 
     include 'db/connect.php';
-    $title = 'Home';
+    $title = 'Leituras';
     require_once 'includes/head.php';
     // Barra de navegação
     include 'includes/header.php';
@@ -12,6 +12,7 @@
                 include 'includes/navbar.php';
             ?>
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <legend>Leituras de Consumo</legend>
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addModalForm">
                 Add

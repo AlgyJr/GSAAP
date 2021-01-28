@@ -1,7 +1,7 @@
 <?php
     include '../connect.php';
 
-    // Constante valor a pagar
+    // Constante valor a pagar por litro
     $PRECOPERLITRO = 120;
 
     $consumo       = $_POST['consumo'];
