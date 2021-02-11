@@ -7,6 +7,17 @@
 
     if ($result) {
         echo '<script> console.("Data saved!") </script>';
+
+        // Update Client Morada
+        $query = "UPDATE MORADA SET provincia='$_POST[provincia]', bairro='$_POST[bairro]', casa_nr='$_POST[casa_nr]', quarteirao='$_POST[quarteirao]', rua='$_POST[rua]' WHERE client_id='$_POST[client_id]'";
+
+        $result = mysqli_query($conn, $query) or die(mysqli_error($conn));
+
+        // Update Telefone
+        $query = "UPDATE TELEFONE SET tel='$_POST[tel]' WHERE client_id='$_POST[client_id]'";
+
+        $result = mysqli_query($conn, $query) or die(mysqli_error($conn));
+
         header('Location: ../../clientes.php');
     } else {
         echo '<script> alert("Data not saved!") </script>';

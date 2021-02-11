@@ -1,7 +1,7 @@
 <?php
     include '../connect.php';
     
-    $query = "UPDATE PROPRIEDADE SET client_id='$_POST[client_id]', pais='$_POST[pais]', provincia='$_POST[provincia]', bairro='$_POST[bairro]', codigo_postal='$_POST[codigo_postal]', propriedade_nr='$_POST[propriedade_nr]' WHERE contador_id='$_POST[contador_id]'";
+    $query = "UPDATE PROPRIEDADE SET client_id='$_POST[client_id]', provincia='$_POST[provincia]', bairro='$_POST[bairro]', codigo_postal='$_POST[codigo_postal]', propriedade_nr='$_POST[propriedade_nr]' WHERE contador_id='$_POST[contador_id]'";
 
     $result = mysqli_query($conn, $query);
 

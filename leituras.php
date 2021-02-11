@@ -1,4 +1,8 @@
 <?php 
+    session_start();
+    if (!isset($_SESSION["isadmin"])) {
+        header('Location: login.php');
+    }
     include 'db/connect.php';
     $title = 'Leituras';
     require_once 'includes/head.php';
@@ -27,7 +31,10 @@
                                 <th>Nr. Contador</th>
                                 <th>Data</th>
                                 <th>Consumo (L)</th>
-                                <th>Opções</th>
+                                <!-- Check if user is ADMIN (if has privilege for this) -->
+                                <?php if ($_SESSION["isadmin"] == "1") { ?>
+                                    <th>Opções</th>
+                                <?php } ?>
                             </tr>
                         </thead>
                         <tbody>
@@ -41,7 +48,10 @@
                                         echo "<td>".$row['contador_id']."</td>";
                                         echo "<td>".$row['data']."</td>";
                                         echo "<td>".$row['consumo']."</td>";
-                                        echo "<td><button class='btn btn-primary editbtn' style='margin: 0px 10px'>Editar</button><a class='btn btn-danger' href='db/operations/deleteLeitura.php?leitura_id=$row[leitura_id]' style='margin: 0px 10px'>Apagar</a></td>";
+                                        // Check if user is ADMIN (if has privilege for this) 
+                                        if ($_SESSION["isadmin"] == "1") {
+                                            echo "<td><button class='btn btn-primary editbtn' style='margin: 0px 10px'>Editar</button><a class='btn btn-danger' href='db/operations/deleteLeitura.php?leitura_id=$row[leitura_id]' style='margin: 0px 10px'>Apagar</a></td>";
+                                        }
                                         echo "</tr>";
                                     }
                                 } else {
@@ -66,7 +76,16 @@
                         <div class="modal-body row g-3">
                             <div class="col-md-6">
                                 <label for="nome" class="form-label">Nr. Contador</label>
-                                <input type="number" inputMode="numeric" min="100000" class="form-control" name="contador_id" placeholder="Introduza o nr. do contador">
+                                <select type="number" class="form-control" name="contador_id" required>
+                                    <option selected disabled>--</option>
+                                    <?php
+                                        $result = mysqli_query($conn, "SELECT contador_id FROM PROPRIEDADE");
+
+                                        foreach ($result as $row) {
+                                            echo "<option value=".$row['contador_id'].">".$row['contador_id']."</option>";
+                                        }
+                                    ?>
+                                </select>
                             </div>
                             <div class="col-md-6">
                                 <label for="data_nasc" class="form-label">Data</label>
@@ -99,7 +118,16 @@
                             <input type="hidden" name="leitura_id" id="leitura_id" />
                             <div class="col-md-6">
                                 <label for="nome" class="form-label">Nr. Contador</label>
-                                <input type="number" inputMode="numeric" min="100000" class="form-control" name="contador_id" id="contador_id" placeholder="Introduza o nr. do contador">
+                                <select type="number" class="form-control" name="contador_id" id="contador_id" required>
+                                    <option selected disabled>--</option>
+                                    <?php
+                                        $result = mysqli_query($conn, "SELECT contador_id FROM PROPRIEDADE");
+
+                                        foreach ($result as $row) {
+                                            echo "<option value=".$row['contador_id'].">".$row['contador_id']."</option>";
+                                        }
+                                    ?>
+                                </select>
                             </div>
                             <div class="col-md-6">
                                 <label for="data_nasc" class="form-label">Data</label>

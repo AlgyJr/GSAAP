@@ -21,10 +21,11 @@
         $result = mysqli_query($conn, $query);
         if ($row = mysqli_fetch_array($result)) {
             // Procura do número de telefone do cliente proprietário do contador
-            $query = "SELECT tel FROM TELEFONE WHERE pessoal_id = '$row[client_id]'";
+            $query = "SELECT tel FROM TELEFONE WHERE client_id = '$row[client_id]'";
             $result = mysqli_query($conn, $query);
             
-            $number = mysqli_fetch_array($result);
+            $row = mysqli_fetch_array($result);
+            $number = "+258".$row['tel'];
             
             $valorPagar = $consumo * $PRECOPERLITRO;
             $data = strtotime("+14 day", strtotime($dataEmissao));
@@ -36,7 +37,7 @@
             $factura_id = mysqli_insert_id($conn);
 
             // Mensagem a ser enviada ao proprietário do contador
-            $msg = "Número da Factura: " . $factura_id . " | Valor a pagar: " . $valorPagar . "MT | Data limite: " . $dataLimite;
+            $msg = "Número da Factura: " . $factura_id . " | Valor a pagar: " . money_format("%.2n MT", $valorPagar) . "MT | Data limite: " . $dataLimite;
 
             include '../../requests/send_sms.php';
         }

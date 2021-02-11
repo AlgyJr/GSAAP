@@ -10,10 +10,12 @@
 
         $client_id = mysqli_insert_id($conn);
 
+        // Add Client Morada
         $query = "INSERT INTO MORADA (client_id, provincia, bairro, casa_nr, quarteirao, rua) VALUES ('$client_id', '$_POST[provincia]', '$_POST[bairro]', '$_POST[casa_nr]', '$_POST[quarteirao]', '$_POST[rua]')";
 
         $result = mysqli_query($conn, $query) or die(mysqli_error($conn));
 
+        // Add Client Phone Number
         $query = "INSERT INTO TELEFONE (client_id, tel) VALUES ('$client_id', '$_POST[tel]')";
 
         $result = mysqli_query($conn, $query) or die(mysqli_error($conn));

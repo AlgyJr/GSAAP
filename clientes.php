@@ -1,4 +1,12 @@
 <?php 
+    session_start();
+    if (!isset($_SESSION["isadmin"])) {
+        header('Location: login.php');
+    } elseif ($_SESSION["isadmin"] == "0") {
+        // 404 page
+        header('Location: login.php');
+    }
+    
     include 'db/connect.php';
     $title = 'Clientes';
     require_once 'includes/head.php';
@@ -35,7 +43,8 @@
                         </thead>
                         <tbody>
                             <?php 
-                                $result = mysqli_query($conn, "SELECT * FROM CLIENTE");
+                                $query = "SELECT * FROM `Cliente`, `Morada`, `Telefone` WHERE `Cliente`.`client_id` = `Morada`.`client_id` AND `Cliente`.`client_id` = `Telefone`.`client_id`";
+                                $result = mysqli_query($conn, $query);
 
                                 if (mysqli_fetch_array($result)) {
                                     foreach ($result as $row) {
@@ -48,6 +57,12 @@
                                         echo "<td>".$row['data_nasc']."</td>";
                                         echo "<td>".$row['sexo']."</td>";
                                         echo "<td><button class='btn btn-primary editbtn' style='margin: 0px 10px'>Editar</button><a class='btn btn-danger' href='db/operations/deleteClient.php?client_id=$row[client_id]' style='margin: 0px 10px'>Apagar</a></td>";
+                                        echo "<td hidden>".$row['provincia']."</td>";
+                                        echo "<td hidden>".$row['bairro']."</td>";
+                                        echo "<td hidden>".$row['casa_nr']."</td>";
+                                        echo "<td hidden>".$row['quarteirao']."</td>";
+                                        echo "<td hidden>".$row['rua']."</td>";
+                                        echo "<td hidden>".$row['tel']."</td>";
                                         echo "</tr>";
                                     }
                                 } else {
@@ -150,8 +165,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                             <button type="submit" name="saveData" class="btn btn-primary">Salvar</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                         </div>
                     </form>
                     </div>
@@ -181,7 +196,7 @@
                                 <label for="apelido" class="form-label">Apelido</label>
                                 <input type="text" class="form-control" name="apelido" id="apelido" placeholder="Introduza o apelido">
                             </div>
-                            <div class="col-12">
+                            <div class="col-md-6">
                                 <label for="email" class="form-label">Email</label>
                                 <input type="email" class="form-control" name="email" id="email" placeholder="nome@exemplo.com">
                             </div>
@@ -233,7 +248,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="bairro" class="form-label">Bairro</label>
-                                <input type="text" class="form-control" name="bairro" placeholder="Introduza o bairro">
+                                <input type="text" class="form-control" name="bairro" id="bairro" placeholder="Introduza o bairro">
                             </div>
                             <div class="col-md-3">
                                 <label for="casa_nr" class="form-label">Nr. Casa</label>
@@ -249,8 +264,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                             <button type="submit" name="saveData" class="btn btn-primary">Salvar</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                         </div>
                     </form>
                     </div>
@@ -281,6 +296,12 @@
             $('#email').val(data[4]);
             $('#data_nasc').val(data[5]);
             data[6] == 'M' ? $('#male').prop("checked", true) : $('#female').prop("checked", true);
+            $('#provincia').val(data[8]);
+            $('#bairro').val(data[9]);
+            $('#casa_nr').val(data[10]);
+            $('#quarteirao').val(data[11]);
+            $('#rua').val(data[12]);
+            $('#tel').val(data[13]);
         })
     })
 </script>

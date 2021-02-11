@@ -23,7 +23,8 @@
             $query = "SELECT tel FROM TELEFONE WHERE pessoal_id = '$row[client_id]'";
             $result = mysqli_query($conn, $query);
             
-            $number = mysqli_fetch_array($result);
+            $row = mysqli_fetch_array($result);
+            $number = "+258".$row['tel'];
             
             $valorPagar = $consumo * $PRECOPERLITRO;
             $data = strtotime("+14 day", strtotime($dataEmissao));

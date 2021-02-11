@@ -1,4 +1,11 @@
 <?php 
+    session_start();
+    if (!isset($_SESSION["isadmin"])) {
+        header('Location: login.php');
+    } elseif ($_SESSION["isadmin"] == "0") {
+        // 404 page
+        header('Location: login.php');
+    }
     include 'db/connect.php';
     $title = 'Funcionários';
     require_once 'includes/head.php';
@@ -30,13 +37,13 @@
                                 <th>Email</th>
                                 <th>Data Nascimento</th>
                                 <th>Sexo</th>
-                                <th>Admin</th>
                                 <th>Opções</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php 
-                                $result = mysqli_query($conn, "SELECT * FROM FUNCIONARIO");
+                                $query = "SELECT * FROM `Funcionario`, `Morada_Func`, `Telefone_Func`, `Credencial` WHERE `Funcionario`.`funcionario_id` = `Morada_Func`.`funcionario_id`AND `Funcionario`.`funcionario_id` = `Telefone_Func`.`funcionario_id` AND `Funcionario`.`email` = `Credencial`.`email`";
+                                $result = mysqli_query($conn, $query);
 
                                 if (mysqli_fetch_array($result)) {
                                     foreach ($result as $row) {
@@ -49,8 +56,14 @@
                                         echo "<td>".$row['email']."</td>";
                                         echo "<td>".$row['data_nasc']."</td>";
                                         echo "<td>".$row['sexo']."</td>";
-                                        echo "<td>".$isAdmin."</td>";
                                         echo "<td><button class='btn btn-primary editbtn' style='margin: 0px 10px'>Editar</button><a class='btn btn-danger' href='db/operations/deleteFunc.php?funcionario_id=$row[funcionario_id]' style='margin: 0px 10px'>Apagar</a></td>";
+                                        echo "<td hidden>".$row['isAdmin']."</td>";
+                                        echo "<td hidden>".$row['provincia']."</td>";
+                                        echo "<td hidden>".$row['bairro']."</td>";
+                                        echo "<td hidden>".$row['casa_nr']."</td>";
+                                        echo "<td hidden>".$row['quarteirao']."</td>";
+                                        echo "<td hidden>".$row['rua']."</td>";
+                                        echo "<td hidden>".$row['tel']."</td>";
                                         echo "</tr>";
                                     }
                                 } else {
@@ -65,7 +78,7 @@
 
                 <!-- Modal Adicionar -->
                 <div class="modal fade" id="addModalForm" tabindex="-1" aria-labelledby="modalFormLabel" aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="modalFormLabel">Adicionar Funcionário</h5>
@@ -85,13 +98,15 @@
                                 <label for="apelido" class="form-label">Apelido</label>
                                 <input type="text" class="form-control" name="apelido" placeholder="Introduza o apelido">
                             </div>
-                            <div class="col-12">
+                            <div class="col-md-6">
                                 <label for="email" class="form-label">Email</label>
                                 <input type="email" class="form-control" name="email" placeholder="nome@exemplo.com">
                             </div>
                             <div class="col-md-6">
-                                <label for="data_nasc" class="form-label">Data de nascimento</label>
-                                <input type="date" class="form-control" name="data_nasc">
+                                <div class="col-lg-6">
+                                    <label for="data_nasc" class="form-label">Data de nascimento</label>
+                                    <input type="date" class="form-control" name="data_nasc" required>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <label for="" class="form-label">Sexo</label>
@@ -116,10 +131,55 @@
                                     </label>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <label for="password" class="form-label">Palavra-passe</label>
+                                <input type="password" class="form-control" minLength="8" name="password" placeholder="Introduza a palavra-passe">
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="col-lg-8 col-md-12">
+                                    <label for="tel" class="form-label">Telefone</label>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon1">+258</span>
+                                        <input type="number" class="form-control" name="tel" placeholder="8XXXXXXXX" maxLength="9" aria-label="Telefone" aria-describedby="basic-addon1" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="provincia" class="form-label">Província</label>
+                                <select class="form-control" name="provincia" required>
+                                    <option selected disabled>--</option>
+                                    <option value="Maputo">Maputo</option>
+                                    <option value="Gaza">Gaza</option>
+                                    <option value="Inhambane">Inhambane</option>
+                                    <option value="Sofala">Sofala</option>
+                                    <option value="Manica">Manica</option>
+                                    <option value="Tete">Tete</option>
+                                    <option value="Zambezia">Zambezia</option>
+                                    <option value="Nampula">Nampula</option>
+                                    <option value="Cabo Delgado">Cabo Delgado</option>
+                                    <option value="Niassa">Niassa</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="bairro" class="form-label">Bairro</label>
+                                <input type="text" class="form-control" name="bairro" placeholder="Introduza o bairro">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="casa_nr" class="form-label">Nr. Casa</label>
+                                <input type="number" class="form-control" step="1" name="casa_nr" placeholder="">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="quarteirao" class="form-label">Quarteirão</label>
+                                <input type="number" class="form-control" name="quarteirao" placeholder="">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="rua" class="form-label">Rua</label>
+                                <input type="text" class="form-control" name="rua" placeholder="Ex: da Ponta d'Ouro">
+                            </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                             <button type="submit" name="saveData" class="btn btn-primary">Salvar</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                         </div>
                     </form>
                     </div>
@@ -128,7 +188,7 @@
 
                 <!-- Modal Editar -->
                 <div class="modal fade" id="editModalForm" tabindex="-1" aria-labelledby="modalFormLabel" aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="modalFormLabel">Editar Funcionário</h5>
@@ -149,13 +209,15 @@
                                 <label for="apelido" class="form-label">Apelido</label>
                                 <input type="text" class="form-control" name="apelido" id="apelido" placeholder="Introduza o apelido">
                             </div>
-                            <div class="col-12">
+                            <div class="col-md-6">
                                 <label for="email" class="form-label">Email</label>
                                 <input type="email" class="form-control" name="email" id="email" placeholder="nome@exemplo.com">
                             </div>
                             <div class="col-md-6">
-                                <label for="data_nasc" class="form-label">Data de nascimento</label>
-                                <input type="date" class="form-control" name="data_nasc" id="data_nasc">
+                                <div class="col-lg-6">
+                                    <label for="data_nasc" class="form-label">Data de nascimento</label>
+                                    <input type="date" class="form-control" name="data_nasc" id="data_nasc" required>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <label for="" class="form-label">Sexo</label>
@@ -180,10 +242,55 @@
                                     </label>
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <label for="password" class="form-label">Palavra-passe</label>
+                                <input type="password" class="form-control" minLength="8" name="password" id="password" placeholder="Nova palavra-passe">
+                            </div>
+                            <div class="col-lg-6 col-md-6">
+                                <div class="col-lg-8 col-md-12">
+                                    <label for="tel" class="form-label">Telefone</label>
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="basic-addon1">+258</span>
+                                        <input type="number" class="form-control" name="tel" id="tel" placeholder="8XXXXXXXX" maxLength="9" aria-label="Telefone" aria-describedby="basic-addon1" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="provincia" class="form-label">Província</label>
+                                <select class="form-control" name="provincia" id="provincia" required>
+                                    <option selected disabled>--</option>
+                                    <option value="Maputo">Maputo</option>
+                                    <option value="Gaza">Gaza</option>
+                                    <option value="Inhambane">Inhambane</option>
+                                    <option value="Sofala">Sofala</option>
+                                    <option value="Manica">Manica</option>
+                                    <option value="Tete">Tete</option>
+                                    <option value="Zambezia">Zambezia</option>
+                                    <option value="Nampula">Nampula</option>
+                                    <option value="Cabo Delgado">Cabo Delgado</option>
+                                    <option value="Niassa">Niassa</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="bairro" class="form-label">Bairro</label>
+                                <input type="text" class="form-control" name="bairro" id="bairro" placeholder="Introduza o bairro">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="casa_nr" class="form-label">Nr. Casa</label>
+                                <input type="number" class="form-control" step="1" name="casa_nr" id="casa_nr" placeholder="">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="quarteirao" class="form-label">Quarteirão</label>
+                                <input type="number" class="form-control" name="quarteirao" id="quarteirao" placeholder="">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="rua" class="form-label">Rua</label>
+                                <input type="text" class="form-control" name="rua" id="rua" placeholder="Ex: da Ponta d'Ouro">
+                            </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                             <button type="submit" name="saveData" class="btn btn-primary">Salvar</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                         </div>
                     </form>
                     </div>
@@ -214,8 +321,13 @@
             $('#email').val(data[4]);
             $('#data_nasc').val(data[5]);
             data[6] == 'M' ? $('#male').prop("checked", true) : $('#female').prop("checked", true);
-            $('#isAdmin').prop("checked", data[7] == "Sim");
-            console.log(data[7] == "Sim");
+            $('#isAdmin').prop("checked", data[8] == 1);
+            $('#provincia').val(data[9]);
+            $('#bairro').val(data[10]);
+            $('#casa_nr').val(data[11]);
+            $('#quarteirao').val(data[12]);
+            $('#rua').val(data[13]);
+            $('#tel').val(data[14]);
         })
     })
 </script>

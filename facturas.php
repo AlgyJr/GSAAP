@@ -1,4 +1,8 @@
 <?php 
+    session_start();
+    if (!isset($_SESSION["isadmin"])) {
+        header('Location: login.php');
+    }
     include 'db/connect.php';
     $title = 'Facturas';
     require_once 'includes/head.php';
@@ -23,7 +27,10 @@
                                 <th>Valor a Pagar</th>
                                 <th>Data Emissao</th>
                                 <th>Data Limite</th>
-                                <th>Opções</th>
+                                <!-- Check if user is ADMIN (if has privilege for this)  -->
+                                <?php if ($_SESSION["isadmin"] == "1") { ?>
+                                    <th>Opção</th>
+                                <?php } ?>
                             </tr>
                         </thead>
                         <tbody>
@@ -35,10 +42,13 @@
                                         echo "<tr>";
                                         echo "<td>".$row['factura_id']."</td>";
                                         echo "<td>".$row['leitura_id']."</td>";
-                                        echo "<td>".$row['valorPagar']."</td>";
+                                        echo "<td>".money_format("%.2n MT", $row['valorPagar'])."</td>";
                                         echo "<td>".$row['dataEmissao']."</td>";
                                         echo "<td>".$row['dataLimite']."</td>";
-                                        echo "<td><a class='btn btn-danger' href='db/operations/deleteFactura.php?factura_id=$row[factura_id]' style='margin: 0px 10px'>Apagar</a></td>";
+                                        // Check if user is ADMIN (if has privilege for this)
+                                        if ($_SESSION["isadmin"] == "1") {
+                                            echo "<td><a class='btn btn-danger' href='db/operations/deleteFactura.php?factura_id=$row[factura_id]' style='margin: 0px 10px'>Apagar</a></td>";
+                                        }
                                         echo "</tr>";
                                     }
                                 } else {

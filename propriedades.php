@@ -1,4 +1,11 @@
 <?php 
+    session_start();
+    if (!isset($_SESSION["isadmin"])) {
+        header('Location: login.php');
+    } elseif ($_SESSION["isadmin"] == "0") {
+        // 404 page
+        header('Location: login.php');
+    }
     include 'db/connect.php';
     $title = 'Propriedades';
     require_once 'includes/head.php';
@@ -60,6 +67,8 @@
                     </table>
                 </div>
 
+                
+
                 <!-- Modal Adicionar -->
                 <div class="modal fade" id="addModalForm" tabindex="-1" aria-labelledby="modalFormLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -72,7 +81,16 @@
                         <div class="modal-body row g-3">
                             <div class="col-md-6">
                                 <label for="client_id" class="form-label">Cliente</label>
-                                <input type="number" inputMode="numeric" min="1000" class="form-control" name="client_id" placeholder="Codigo cliente" required>
+                                <select type="number" class="form-control" name="client_id" required>
+                                    <option selected disabled>--</option>
+                                    <?php
+                                        $result = mysqli_query($conn, "SELECT client_id, nome FROM CLIENTE");
+
+                                        foreach ($result as $row) {
+                                            echo "<option value=".$row['client_id'].">".$row['nome']."</option>";
+                                        }
+                                    ?>
+                                </select>
                             </div>
                             <div class="col-md-6">
                                 <label for="provincia" class="form-label">Província</label>
@@ -92,7 +110,7 @@
                             </div>
                             <div class="col-md-12">
                                 <label for="bairro" class="form-label">Bairro</label>
-                                <input type="text" class="form-control" name="bairro" placeholder="Introduza o bairro">
+                                <input type="text" class="form-control" name="bairro" placeholder="Introduza o bairro" required>
                             </div>
                             <div class="col-md-6">
                                 <label for="codigo_postal" class="form-label">Código Postal</label>
@@ -125,7 +143,16 @@
                             <input type="hidden" name="contador_id" id="contador_id" />
                             <div class="col-md-6">
                                 <label for="client_id" class="form-label">Cliente</label>
-                                <input type="number" inputMode="numeric" min="1000" class="form-control" name="client_id" id="client_id" placeholder="Codigo cliente" required>
+                                <select type="number" class="form-control" name="client_id" id="client_id" required>
+                                    <option selected disabled>--</option>
+                                    <?php
+                                        $result = mysqli_query($conn, "SELECT client_id, nome FROM CLIENTE");
+
+                                        foreach ($result as $row) {
+                                            echo "<option value=".$row['client_id'].">".$row['nome']."</option>";
+                                        }
+                                    ?>
+                                </select>
                             </div>
                             <div class="col-md-6">
                                 <label for="provincia" class="form-label">Província</label>
