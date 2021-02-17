@@ -2,7 +2,7 @@
     include '../connect.php';
 
     // Constante valor a pagar por litro
-    $PRECOPERLITRO = 120;
+    $PRECOPERLITRO = 59.29;
 
     $consumo       = $_POST['consumo'];
     $dataEmissao   = $_POST['data'];
@@ -28,7 +28,7 @@
             $number = "+258".$row['tel'];
             
             $valorPagar = $consumo * $PRECOPERLITRO;
-            $data = strtotime("+14 day", strtotime($dataEmissao));
+            $data = strtotime("+25 day", strtotime($dataEmissao));
             $dataLimite = date("Y-m-d", $data);
 
             // Criação da factura na base de dados
