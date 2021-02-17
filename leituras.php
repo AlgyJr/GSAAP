@@ -28,9 +28,9 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Nr. Contador</th>
+                                <th>Cód. Contador</th>
                                 <th>Data</th>
-                                <th>Consumo (L)</th>
+                                <th>Consumo (m3)</th>
                                 <!-- Check if user is ADMIN (if has privilege for this) -->
                                 <?php if ($_SESSION["isadmin"] == "1") { ?>
                                     <th>Opções</th>
@@ -47,7 +47,7 @@
                                         echo "<td>".$row['leitura_id']."</td>";
                                         echo "<td>".$row['contador_id']."</td>";
                                         echo "<td>".$row['data']."</td>";
-                                        echo "<td>".$row['consumo']."</td>";
+                                        echo "<td>".number_format($row['consumo'], 2, ".", "")."</td>";
                                         // Check if user is ADMIN (if has privilege for this) 
                                         if ($_SESSION["isadmin"] == "1") {
                                             echo "<td><button class='btn btn-primary editbtn' style='margin: 0px 10px'>Editar</button><a class='btn btn-danger' href='db/operations/deleteLeitura.php?leitura_id=$row[leitura_id]' style='margin: 0px 10px'>Apagar</a></td>";
@@ -92,7 +92,7 @@
                                 <input type="date" class="form-control" name="data" value=<?php echo date("Y-m-d") ?>>
                             </div>
                             <div class="col-md-3">
-                                <label for="sobrenome" class="form-label">Consumo</label>
+                                <label for="sobrenome" class="form-label">Consumo (m3)</label>
                                 <input type="number" inputMode="decimal" class="form-control" min="0" step=".01" name="consumo" value="0.0" placeholder="Introduza o consumo">
                             </div>
                         </div>
@@ -134,7 +134,7 @@
                                 <input type="date" class="form-control" name="data" id="data" ?>
                             </div>
                             <div class="col-md-3">
-                                <label for="sobrenome" class="form-label">Consumo</label>
+                                <label for="sobrenome" class="form-label">Consumo (m3)</label>
                                 <input type="number" inputMode="decimal" class="form-control" min="0" step=".01" name="consumo" id="consumo" placeholder="Introduza o consumo">
                             </div>
                         </div>
