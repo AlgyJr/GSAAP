@@ -20,8 +20,8 @@
         $result = mysqli_query($conn, $query);
         if ($row = mysqli_fetch_array($result)) {
             // Procura do número de telefone do cliente proprietário do contador
-            $query = "SELECT tel FROM TELEFONE WHERE pessoal_id = '$row[client_id]'";
-            $result = mysqli_query($conn, $query);
+            $query = "SELECT tel FROM TELEFONE WHERE client_id = '$row[client_id]'";
+            $result = mysqli_query($conn, $query) or die(mysqli_error($conn));
             
             $row = mysqli_fetch_array($result);
             $number = "+258".$row['tel'];
@@ -30,6 +30,10 @@
             $data = strtotime("+14 day", strtotime($dataEmissao));
             $dataLimite = date("Y-m-d", $data);
 
+            // Apagar factura relacionada ao consumo
+            $query = "DELETE FROM FACTURA WHERE leitura_id='$leitura_id'";
+            $result = mysqli_query($conn, $query) or die(mysqli_error($conn));
+
             // Criação da factura na base de dados
             $query = "INSERT INTO FACTURA (leitura_id, valorPagar, dataEmissao, dataLimite) VALUES ('$leitura_id', '$valorPagar', '$dataEmissao', '$dataLimite')";
             $result = mysqli_query($conn, $query);
@@ -37,7 +41,7 @@
             $factura_id = mysqli_insert_id($conn);
 
             // Mensagem a ser enviada ao proprietário do contador
-            $msg = "Número da Factura: " . $factura_id . " | Valor a pagar: " . $valorPagar . "MT | Data limite: " . $dataLimite;
+            $msg = "Número da Factura: " . $factura_id . " | Valor a pagar: " . number_format($valorPagar, 2, ",",".") . "MT | Data limite: " . $dataLimite;
 
             if ($result) {
                 include '../../requests/send_sms.php';

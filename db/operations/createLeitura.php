@@ -37,7 +37,7 @@
             $factura_id = mysqli_insert_id($conn);
 
             // Mensagem a ser enviada ao proprietário do contador
-            $msg = "Número da Factura: " . $factura_id . " | Valor a pagar: " . money_format("%.2n MT", $valorPagar) . "MT | Data limite: " . $dataLimite;
+            $msg = "Número da Factura: " . $factura_id . " | Valor a pagar: " . number_format($valorPagar, 2, ",",".") . "MT | Data limite: " . $dataLimite;
 
             include '../../requests/send_sms.php';
         }
