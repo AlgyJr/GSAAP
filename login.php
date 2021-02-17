@@ -102,7 +102,6 @@
     
     <?php 
       require_once 'includes/footer.php';
-      $stmt->close();
       $conn->close();
     ?>
   </body>
